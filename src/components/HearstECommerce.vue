@@ -101,9 +101,11 @@ export default {
 };
 </script>
 <style scoped>
-#container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  border: 1px solid black;
+@media screen and (min-width: 500px) {
+  #container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid black;
+  }
 }
 </style>
