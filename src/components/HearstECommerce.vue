@@ -3,10 +3,11 @@
     <template v-for="data in gridData">
       <div
         :class="{ fullWidth: data.position.startsWith('row') }"
+        class="item"
         v-if="data.type === 'html'"
         v-html="data.contents"
       ></div>
-      <div v-else>
+      <div v-else class="item">
         {{ data.title }}
       </div>
     </template>
@@ -107,10 +108,20 @@ export default {
         let index = cell.position.split("-")[1];
         this.gridData.splice(index - 1, 0, cell);
       });
+      rowContents = rowContents.sort((a, b) => {
+        if (a.position.split("-")[1] > b.position.split("-")[1]) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+      console.log("rowc", rowContents);
+      let newlyInsertedRows = 0;
       rowContents.forEach((row) => {
         let rowNumber = row.position.split("-")[1];
-        let indexToBeInserted = 3 * (rowNumber - 1);
+        let indexToBeInserted = 3 * (rowNumber - 1) - newlyInsertedRows * 2;
         this.gridData.splice(indexToBeInserted, 0, row);
+        newlyInsertedRows++;
       });
     },
   },
@@ -123,11 +134,15 @@ export default {
     grid-template-columns: 1fr 1fr 1fr;
     border: 1px solid black;
   }
-  
 }
 
 .fullWidth {
   grid-column: 1 / -1;
-  align-items:start;
+  text-align: left;
+  align-items: start;
+  justify-items: self-start;
+}
+.item {
+  border: 1px solid black;
 }
 </style>
