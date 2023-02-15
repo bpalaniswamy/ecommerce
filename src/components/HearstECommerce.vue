@@ -96,6 +96,22 @@ export default {
   methods: {
     getGridData() {
       this.gridData = [...this.products];
+      let cellContents = this.contents.filter((content) => {
+        return content.position.startsWith("cell");
+      });
+      let rowContents = this.contents.filter((content) => {
+        return content.position.startsWith("row");
+      });
+
+      cellContents.forEach((cell) => {
+        let index = cell.position.split("-")[1];
+        this.gridData.splice(index - 1, 0, cell);
+      });
+      rowContents.forEach((row) => {
+        let rowNumber = row.position.split("-")[1];
+        let indexToBeInserted = 3 * (rowNumber - 1);
+        this.gridData.splice(indexToBeInserted, 0, row);
+      });
     },
   },
 };
@@ -107,5 +123,11 @@ export default {
     grid-template-columns: 1fr 1fr 1fr;
     border: 1px solid black;
   }
+  
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+  align-items:start;
 }
 </style>
